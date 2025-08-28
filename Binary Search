@@ -1,0 +1,18 @@
+#include <stdio.h>
+int main() {
+    int arr[6] = {5, 10, 15, 20, 25, 30};
+    int key = 20, low=0, high=5, mid, flag=0;
+
+    while(low <= high) {
+        mid = (low+high)/2;
+        if(arr[mid] == key) {
+            printf("Element %d found at position %d\n", key, mid+1);
+            flag=1;
+            break;
+        }
+        else if(arr[mid] < key) low = mid+1;
+        else high = mid-1;
+    }
+    if(flag==0) printf("Element not found\n");
+    return 0;
+}
