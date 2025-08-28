@@ -1,0 +1,59 @@
+#include <stdio.h>
+#define V 5
+#define E 7
+
+struct Edge {
+    int u, v, w;
+};
+
+int parent[V];
+
+int find(int i) {
+    while (parent[i] != i)
+        i = parent[i];
+    return i;
+}
+
+void union_set(int i, int j) {
+    int a = find(i);
+    int b = find(j);
+    parent[a] = b;
+}
+
+void kruskal(struct Edge edges[E]) {
+    int i, j;
+    for (i = 0; i < V; i++)
+        parent[i] = i;
+
+    printf("Edge \tWeight\n");
+    for (i = 0; i < E; i++) {
+        int u = edges[i].u;
+        int v = edges[i].v;
+        if (find(u) != find(v)) {
+            printf("%d - %d \t%d\n", u, v, edges[i].w);
+            union_set(u, v);
+        }
+    }
+}
+
+int main() {
+    struct Edge edges[E] = {
+        {0,1,10}, {0,2,6}, {0,3,5},
+        {1,3,15}, {2,3,4}, {1,2,25},
+        {2,4,2}
+    };
+
+    // Sort edges by weight
+    for (int i = 0; i < E-1; i++) {
+        for (int j = 0; j < E-i-1; j++) {
+            if (edges[j].w > edges[j+1].w) {
+                struct Edge temp = edges[j];
+                edges[j] = edges[j+1];
+                edges[j+1] = temp;
+            }
+        }
+    }
+
+    kruskal(edges);
+    return 0;
+}
