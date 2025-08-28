@@ -1,0 +1,46 @@
+#include <stdio.h>
+#define SIZE 10
+
+int queue[SIZE], front = -1, rear = -1;
+int visited[SIZE];
+
+void enqueue(int v) {
+    if (rear == SIZE-1) return;
+    if (front == -1) front = 0;
+    queue[++rear] = v;
+}
+
+int dequeue() {
+    if (front == -1 || front > rear) return -1;
+    return queue[front++];
+}
+
+void bfs(int graph[SIZE][SIZE], int n, int start) {
+    int i, v;
+    enqueue(start);
+    visited[start] = 1;
+    while ((v = dequeue()) != -1) {
+        printf("%d ", v);
+        for (i = 0; i < n; i++) {
+            if (graph[v][i] == 1 && !visited[i]) {
+                enqueue(i);
+                visited[i] = 1;
+            }
+        }
+    }
+}
+
+int main() {
+    int n = 5;
+    int graph[SIZE][SIZE] = {
+        {0,1,1,0,0},
+        {1,0,0,1,0},
+        {1,0,0,1,1},
+        {0,1,1,0,0},
+        {0,0,1,0,0}
+    };
+    for (int i = 0; i < n; i++) visited[i] = 0;
+    printf("BFS Traversal starting from node 0: ");
+    bfs(graph, n, 0);
+    return 0;
+}
